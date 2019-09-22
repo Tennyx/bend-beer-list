@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
- get '/', to: proc { [200, {}, ['']] }
+ # get '/', to: proc { [200, {}, ['']] }
  namespace :api do
   namespace :v1 do
 
