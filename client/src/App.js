@@ -5,6 +5,7 @@ import Client from './Client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle as fasCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBars as fasBars } from '@fortawesome/free-solid-svg-icons';
 
 class BreweryList extends Component {
   constructor(props){
@@ -70,7 +71,7 @@ class BreweryList extends Component {
             <div className="col-md-1 cell circle-check"><FontAwesomeIcon icon={fasCircle} size="lg" className="circle-font" onClick={this.toggleCircle} id={d.id} color={d.visited ? '#5cd152' : '#ebebeb'} /></div>
             <div className="col-md-3 cell" key={d.name}>{d.name}</div>
             <div className="col-md-3 cell" key={d.location}>{d.location}</div>
-            <div className="col-md-1 cell placeholder"></div>
+            <div className="col-md-1 cell placeholder"><FontAwesomeIcon icon={fasBars} size="lg" /></div>
           </div>)
           }
       </div>  
