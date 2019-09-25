@@ -7,12 +7,11 @@ import { faCircle as fasCircle } from '@fortawesome/free-solid-svg-icons';
 import { faBars as fasBars } from '@fortawesome/free-solid-svg-icons';
 
 function BeerList(props) {
-  console.log(props);
-  if(props.showList){
+  if(props.showBeers.includes(props.brewery.id.toString())){
     return (
       <>
       {
-      (props.brewery.beerList).map((d) =>
+      (props.brewery.beers).map((d) =>
         <div className="row justify-content-center">
           <div className="col-md-6 text-center beer-cell">
             {d.name}
@@ -71,17 +70,9 @@ class BreweryList extends Component {
     this.setState({showBeersList: currentBeerList});
   }
 
-  componentDidMount(){
+  componentWillMount(){
     Client.search('breweries', (obj) => {
-    let breweryList = obj;
-
-    for(let i=0;i<breweryList.length;i++){
-      Client.search('breweries/'+ breweryList[i].id + '?q=beerlist', (blist) => {
-        breweryList[i]['beerList'] = blist;
-      });   
-    }
-
-      this.setState({breweryList : breweryList});
+      this.setState({breweryList : obj});
     });
   }
 
