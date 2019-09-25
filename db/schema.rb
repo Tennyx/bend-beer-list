@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_20_042956) do
+ActiveRecord::Schema.define(version: 2019_09_25_012850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,14 @@ ActiveRecord::Schema.define(version: 2019_09_20_042956) do
     t.string "slug"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "beers", force: :cascade do |t|
+    t.string "name"
+    t.bigint "brewery_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["brewery_id"], name: "index_beers_on_brewery_id"
   end
 
   create_table "breweries", force: :cascade do |t|
@@ -89,4 +97,5 @@ ActiveRecord::Schema.define(version: 2019_09_20_042956) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "beers", "breweries"
 end

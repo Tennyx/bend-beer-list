@@ -1,5 +1,5 @@
 function search(query, cb) {
-  return fetch('api/v1/breweries', {
+  return fetch('api/v1/' + query, {
     headers : { 
       'Content-Type': 'application/json',
       'Accept': 'application/json'

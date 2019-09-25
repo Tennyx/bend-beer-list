@@ -7,14 +7,15 @@ import { faCircle as fasCircle } from '@fortawesome/free-solid-svg-icons';
 import { faBars as fasBars } from '@fortawesome/free-solid-svg-icons';
 
 function BeerList(props) {
+  console.log(props);
   if(props.showList){
     return (
       <>
       {
-      props.beerList.map((d) =>
+      (props.brewery.beerList).map((d) =>
         <div className="row justify-content-center">
           <div className="col-md-6 text-center beer-cell">
-            {d}
+            {d.name}
           </div>
         </div>
       )
@@ -23,7 +24,7 @@ function BeerList(props) {
     );
   }
   else {
-    return '';
+    return <div></div>;
   }
 }
 
@@ -33,7 +34,7 @@ class BreweryList extends Component {
     this.state = {
       breweryList : [],
       clickedCircle : [0,false],
-      showList : false
+      showBeersList : []
     };
     this.toggleCircle = this.toggleCircle.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
@@ -56,14 +57,31 @@ class BreweryList extends Component {
   }
 
   toggleMenu(e){
-    console.log(e.currentTarget.id);
-    let currentShowListVal = this.state.showList;
-    this.setState({showList: !currentShowListVal});
+    let menuId = (e.currentTarget.id).split('-')[1];
+    let currentBeerList = this.state.showBeersList;
+
+    if(currentBeerList.includes(menuId)){
+      let index = currentBeerList.indexOf(menuId);
+      currentBeerList.splice(index, 1);
+    } 
+    else{
+      currentBeerList.push(menuId);
+    }
+
+    this.setState({showBeersList: currentBeerList});
   }
 
   componentDidMount(){
     Client.search('breweries', (obj) => {
-      this.setState({breweryList : obj});
+    let breweryList = obj;
+
+    for(let i=0;i<breweryList.length;i++){
+      Client.search('breweries/'+ breweryList[i].id + '?q=beerlist', (blist) => {
+        breweryList[i]['beerList'] = blist;
+      });   
+    }
+
+      this.setState({breweryList : breweryList});
     });
   }
 
@@ -105,7 +123,7 @@ class BreweryList extends Component {
               <div className="col-md-3 cell" key={d.location}>{d.location}</div>
               <div className="col-md-1 cell placeholder"><FontAwesomeIcon icon={fasBars} size="lg" onClick={this.toggleMenu} id={'menu-' + d.id} /></div>
             </div>
-            <BeerList beerList={['dwed','dewd','wefwefefwefewf','fwefew']} showList={this.state.showList} />
+            <BeerList brewery={d} showBeers={this.state.showBeersList} />
           </>
           )
           }

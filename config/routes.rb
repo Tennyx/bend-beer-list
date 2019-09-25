@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
+  
  # get '/', to: proc { [200, {}, ['']] }
  namespace :api do
   namespace :v1 do
-
-   resources :breweries
+  	resources :beers
+   	resources :breweries
   end
  end
 

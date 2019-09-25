@@ -10,7 +10,12 @@ class Api::V1::BreweriesController < ApplicationController
 
   # GET /breweries/1
   def show
-    render json: @brewery
+    if params['q'] == 'beerlist'
+      brewery_beer_list = Beer.where(brewery: @brewery)
+      render json: brewery_beer_list 
+    else
+      render json: @brewery
+    end
   end
 
   # POST /breweries
