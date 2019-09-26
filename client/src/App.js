@@ -70,7 +70,7 @@ class BreweryList extends Component {
     this.setState({showBeersList: currentBeerList});
   }
 
-  componentWillMount(){
+  componentDidMount(){
     Client.search('breweries', (obj) => {
       this.setState({breweryList : obj});
     });
@@ -126,7 +126,6 @@ class BreweryList extends Component {
 class App extends Component {
   state = {
   }
-
 
   render() {
 
