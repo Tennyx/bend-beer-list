@@ -10,6 +10,10 @@ See brewery API here:
 
 https://bend-beer-list.herokuapp.com/api/v1/breweries
 
+And beer API here:
+
+https://bend-beer-list.herokuapp.com/api/v1/beers
+
 Beers are in a seperate table, but are populating with their respective breweries using a has_many/belongs_to relationship.
 
 (Note: Uses Heroku's free tier so it may be in sleep mode. Also, beers are seeded for only the first 2 breweries)
