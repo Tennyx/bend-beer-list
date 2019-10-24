@@ -1,19 +1,42 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import './App.css';
 import Client from './Client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle as fasCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBars as fasBars } from '@fortawesome/free-solid-svg-icons';
+
+function BeerList(props) {
+  if(props.showBeers.includes(props.brewery.id.toString())){
+    return (
+      <>
+      {
+      (props.brewery.beers).map((d) =>
+        <div className="row justify-content-center">
+          <div className="col-md-6 text-center beer-cell">
+            {d.name}
+          </div>
+        </div>
+      )
+      }
+      </>
+    );
+  }
+  else {
+    return <div></div>;
+  }
+}
 
 class BreweryList extends Component {
   constructor(props){
     super(props);
     this.state = {
       breweryList : [],
-      clickedCircle : [0,false]
+      clickedCircle : [0,false],
+      showBeersList : []
     };
     this.toggleCircle = this.toggleCircle.bind(this);
+    this.toggleMenu = this.toggleMenu.bind(this);
   }
 
   toggleCircle(e){
@@ -32,6 +55,21 @@ class BreweryList extends Component {
     }
   }
 
+  toggleMenu(e){
+    let menuId = (e.currentTarget.id).split('-')[1];
+    let currentBeerList = this.state.showBeersList;
+
+    if(currentBeerList.includes(menuId)){
+      let index = currentBeerList.indexOf(menuId);
+      currentBeerList.splice(index, 1);
+    } 
+    else{
+      currentBeerList.push(menuId);
+    }
+
+    this.setState({showBeersList: currentBeerList});
+  }
+
   componentDidMount(){
     Client.search('breweries', (obj) => {
       this.setState({breweryList : obj});
@@ -40,18 +78,21 @@ class BreweryList extends Component {
 
   componentDidUpdate(props){
     let breweryData = this.state.clickedCircle;
-    let url = 'api/v1/breweries/' + breweryData[0];
-    let data = {visited: breweryData[1]};
 
-    fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers:{
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json())
-    .then(response => console.log('Success:', JSON.stringify(response)))
-    .catch(error => console.error('Error:', error)); 
+    if(breweryData[0] != 0){
+      let url = 'api/v1/breweries/' + breweryData[0];
+      let data = {visited: breweryData[1]};
+
+      fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+      .then(response => console.log('Success:', JSON.stringify(response)))
+      .catch(error => console.error('Error:', error)); 
+    }
   }
 
   render(){
@@ -66,12 +107,16 @@ class BreweryList extends Component {
           
           {
           this.state.breweryList.map((d) =>
-          <div className="row justify-content-center">
-            <div className="col-md-1 cell circle-check"><FontAwesomeIcon icon={fasCircle} size="lg" className="circle-font" onClick={this.toggleCircle} id={d.id} color={d.visited ? '#5cd152' : '#ebebeb'} /></div>
-            <div className="col-md-3 cell" key={d.name}>{d.name}</div>
-            <div className="col-md-3 cell" key={d.location}>{d.location}</div>
-            <div className="col-md-1 cell placeholder"></div>
-          </div>)
+          <>
+            <div className="row justify-content-center" key={'brewery-container-' + d.id}>
+              <div className="col-md-1 cell circle-check"><FontAwesomeIcon icon={fasCircle} size="lg" className="circle-font" onClick={this.toggleCircle} id={d.id} color={d.visited ? '#5cd152' : '#ebebeb'} /></div>
+              <div className="col-md-3 cell" key={d.name}>{d.name}</div>
+              <div className="col-md-3 cell" key={d.location}>{d.location}</div>
+              <div className="col-md-1 cell placeholder"><FontAwesomeIcon icon={fasBars} size="lg" onClick={this.toggleMenu} id={'menu-' + d.id} /></div>
+            </div>
+            <BeerList brewery={d} showBeers={this.state.showBeersList} />
+          </>
+          )
           }
       </div>  
     );
@@ -81,7 +126,6 @@ class BreweryList extends Component {
 class App extends Component {
   state = {
   }
-
 
   render() {
 

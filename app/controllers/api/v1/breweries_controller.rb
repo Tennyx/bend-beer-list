@@ -1,16 +1,23 @@
+require 'json'
+
 class Api::V1::BreweriesController < ApplicationController
   before_action :set_brewery, only: [:show, :update, :destroy]
 
   # GET /breweries
   def index
     @breweries = Brewery.all.order(:id)
-
-    render json: @breweries
+    render json: Brewery.all.order(:id).to_json(:include => {:beers => {:only => :name}})
+    #render json: @breweries
   end
 
   # GET /breweries/1
   def show
-    render json: @brewery
+    if params['q'] == 'beerlist'
+      brewery_beer_list = Beer.where(brewery: @brewery)
+      render json: brewery_beer_list 
+    else
+      render json: @brewery
+    end
   end
 
   # POST /breweries

@@ -16,12 +16,110 @@ breweryList = [
 	'Kobold Brewing - 1470 NW 3rd St, Bend',
 	'Immersion Brewing - 550 SW Industrial Way #185, Bend',
 	'Bridge 99 Brewery - 63063 Layton Ave, Bend',
-	'Oblivion Brewing Co. - 63027 Plateau Dr, Bend',
+	'Oblivion Brewing Co. - 63027 Plateau Dr, Bend'
 ]
+
+beerlists = 
+	[
+		[
+		"Hop Venom",
+		"RPM IPA",
+		"Notorious",
+		"Armored Fist",
+		"Bone-A-Fide",
+		"Suge Knite",
+		"Diablo Rojo",
+		"Hop-A-Wheelie",
+		"Backbone Chocolate Espresso Stout",
+		"Incredible Pulp",
+		"Black 13",
+		"Chingadera",
+		"Skunk Ape",
+		"Femme Fatale",
+		"3-Way IPA",
+		"Bone Light",
+		"Bourbon Barrel Suge Knite",
+		"Girl Beer",
+		"Shotgun Session IPA",
+		"Pabo Pils",
+		"Skin & Bones ISA",
+		"Brewer's Crack",
+		"Alemaster",
+		"White Knuckle",
+		"Enzymatic",
+		"Bone Crusher",
+		"Wit Shack Wit",
+		"Gueze Crueze Sour",
+		"Orange Is The New Jack",
+		"Sticky Zwickel Kettle Sour",
+		"Eeepa",
+		"Massacre",
+		"Mr. Centaur",
+		"Chocolate Cherry Stout",
+		"Hypoxic Porte",
+		"Metabolic IPA",
+		"Bohnee",
+		"Barrel-Aged Breakfast Stout",
+		"Longboy",
+		"Snow Worries",
+		"Sour G",
+		"Rapid Transit",
+		"Little Fist",
+		"3Bs IPA",
+		"Pineapple With Attitude",
+		"Bombay Golden Ale",
+		"Big League Chew",
+		"Camper Van Kolsch",
+		"Feels Like the Fresh Time",
+		"Boneyard / 3 Floyd’s"
+		],
+		[
+		"Sahalie",
+		"The Beer Formerly Known As (TBFKA) La Tache",
+		"Sahati",
+		"El Cuatro",
+		"Be Still",
+		"Carpe Diem Mañana",
+		"Ralph",
+		"Spencer",
+		"Sahalie Fresh Hop",
+		"El Cuatro - Grand Cru",
+		"Sauvie",
+		"Red Echo",
+		"La Tache",
+		"Double Peach La Tache",
+		"Lodgehouse",
+		"Smothered In Hugs",
+		"Field Spirits",
+		"Loganberry La Tache",
+		"Bizzaro La Tache",
+		"Bluto",
+		"Plumage",
+		"Dry + Wet Hopped La Tache",
+		"Spruce Sahalie",
+		"Blackberry ¡Vamonós!",
+		"La Tache - Tequila & Raspberry",
+		"Faerie Tears, vol. 2",
+		"RUGBRØD",
+		"La Tache - Persimmons & Sour Cherry",
+		"Dan	American",
+		"Flavor Packet",
+		"Witch Tree",
+		"Hilario"
+		]
+	]
+
 
 i = 0
 
 until i == breweryList.length
-	Brewery.create(name: breweryList[i].split('-')[0],location: breweryList[i].split('-')[1], visited: false)
+	@brewery = Brewery.create(name: breweryList[i].split('-')[0], location: breweryList[i].split('-')[1], visited: false)
+		beer_list_index = 0
+		if i < beerlists.length
+			until beer_list_index == beerlists[i].length
+				@beer = @brewery.beers.create(name: beerlists[i][beer_list_index])
+				beer_list_index += 1
+			end
+		end
 	i += 1
 end
